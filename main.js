@@ -12,5 +12,18 @@ const app = new Vue({
     inStock: true,
     inventory: 1,
     onSale: true,
-  },
+    details: ["100% cotton", "size 8-12", "men's socks"],
+    variants: [
+      {
+        variantId: 2234,
+        variantColor: "green",
+      },
+      {
+        variantId: 2235,
+        variantColor: "blue",
+      },
+    ],
+    sizes: ["size 4-7", "size 8-12", "size 13-15"],
+    cart: 0
+  }
 });
