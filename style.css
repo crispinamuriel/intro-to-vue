@@ -87,3 +87,17 @@
    color: #16C0B0;
    text-decoration: underline;
  }
+
+ .outOfStock {
+   color: red;
+ }
+
+ .lineThrough {
+   color: grey;
+   text-decoration: line-through;
+ }
+
+ .italicSale {
+   font-style: italic;
+   color: #16C0B0;
+ }
