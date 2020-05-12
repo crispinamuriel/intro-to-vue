@@ -54,5 +54,9 @@ Vue.component('product', {  //then pass in the 'options object'
 });
 
 const app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    premium: true,
+    details: ['100% cotton', 'sizes 8-16']
+  }
 });
