@@ -1,57 +1,80 @@
 /* eslint-disable quotes */
-Vue.component("product", {
-  props: {},
+Vue.component("productDetails", {
+  props: {
+    details: {
+      type: Array,
+      required: true,
+    },
+  },
   template: `
-  <div>
-    <div class="product">
-      <div class="product-image">
-        <a :href="link">
-          <img v-bind:src="image" />
-        </a>
-      </div>
+    <div>
+      <ul>
+            <li v-for="detail in details">
+              {{detail}}hi
+            </li>
+          </ul>
+    </div>
+  `,
+});
 
-      <div class="product-info">
-        <h1>
-          {{title}}
-        </h1>
-        <p>{{description}}</p>
-
-        <span style="color: green" v-if="onSale && inventory > 0">{{title}} On Sale!</span>
-        <p v-if="inventory > 11">In Stock</p>
-        <p style="color: rgb(187, 100, 0)" v-else-if="inventory <= 10 && inventory > 0">Almost out of stock!</p>
-        <p :class="[inStock ? lineThrough : outOfStock]" v-else=>Out of Stock</p>
-
-        <ul>
-          <li v-for="detail in details">
-            {{detail}}
-          </li>
-        </ul>
-
-        <div v-for="(variant, i) in variants"
-             :key="variant.variantId"
-             class="color-box"
-             :style="{backgroundColor: variant.variantColor}"
-             @mouseover="updateProduct(i)">
+Vue.component("product", {
+  props: {
+    premium: {
+      type: Boolean,
+      required: true
+    }
+  },
+  template: `
+    <div>
+      <div class="product">
+        <div class="product-image">
+          <a :href="link">
+            <img v-bind:src="image" />
+          </a>
         </div>
 
-        <div v-for="size in sizes">
-          <span>{{size}}</span>
+
+
+        <div class="product-info">
+          <h1>
+            {{title}}
+          </h1>
+          <p>{{description}}</p>
+
+          <span style="color: green" v-if="onSale && inventory > 0">{{title}} On Sale!</span>
+          <p v-if="inventory > 11">In Stock</p>
+          <p style="color: rgb(187, 100, 0)" v-else-if="inventory <= 10 && inventory > 0">Almost out of stock!</p>
+          <p :class="[inStock ? lineThrough : outOfStock]" v-else="">Out of Stock</p>
+
+          <p> Shipping: {{shipping}}</p>
+
+
+
+          <div v-for="(variant, i) in variants"
+              :key="variant.variantId"
+              class="color-box"
+              :style="{backgroundColor: variant.variantColor}"
+              @mouseover="updateProduct(i)">
+          </div>
+
+          <div v-for="size in sizes">
+            <span>{{size}}</span>
+          </div>
+
+          <button v-on:click="addToCart"
+                  :disabled="!inStock"
+                  :class="{ disabledButton: !inStock }"
+                  >Add</button>
+
+          <div class="cart">
+            <p>Cart({{cart}})</p>
+          </div>
+          <button v-on:click="decrementCart">Remove</button>
+          <button v-on:click="resetCart">Reset Cart</button>
+
         </div>
-
-        <button v-on:click="addToCart"
-                :disabled="!inStock"
-                :class="{ disabledButton: !inStock }"
-                >Add</button>
-
-        <div class="cart">
-          <p>Cart({{cart}})</p>
-        </div>
-        <button v-on:click="decrementCart">Remove</button>
-        <button v-on:click="resetCart">Reset Cart</button>
-
       </div>
     </div>
-  </div>
   `,
   data() {
     return {
@@ -115,9 +138,20 @@ Vue.component("product", {
     inStock() {
       return this.variants[this.selectedVariant].variantQuantity;
     },
+    shipping() {
+      if (this.premium) {
+        return  `Free`;
+      } else {
+        return '$5.99';
+      }
+    }
   },
 });
 
 const app = new Vue({
-  el: "#app"
+  el: "#app",
+  data: {
+    premium: true,
+    details: ["100% cotton", "size 4-15", "Men's socks"]
+  },
 });
